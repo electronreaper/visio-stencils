@@ -1,0 +1,68 @@
+# Publish the catalog to GitHub Pages.
+#
+# The site is plain HTML. This workflow rebuilds docs/stencils.json from
+# stencils/ and adds per-vendor zip archives, then deploys docs/.
+#
+# enablement: true asks the API to create a Pages site (source: GitHub Actions)
+# the first time this runs. The default GITHUB_TOKEN cannot create a site —
+# that call needs administration:write, which only a PAT or a GitHub App can
+# hold — so a new repository still needs one click:
+#   Settings → Pages → Build and deployment → Source → GitHub Actions
+# After that, every push to main publishes on its own. Do not switch Source
+# to "Deploy from a branch": the vendor zips exist only in this artifact.
+
+name: Pages
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  check:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Catalog matches the stencil files
+        run: python3 scripts/build_manifest.py --check
+
+  build:
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build catalog and vendor archives
+        run: python3 scripts/build_manifest.py --zips docs/zips
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

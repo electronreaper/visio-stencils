@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>
+    try {
+      var stored = localStorage.getItem("theme");
+      var theme = stored === "light" || stored === "dark"
+        ? stored
+        : (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", theme);
+    } catch (e) {
+      document.documentElement.setAttribute("data-theme", "light");
+    }
+  </script>
+  <title>Visio Stencils</title>
+  <meta name="description" content="A public catalog of Microsoft Visio stencils for data-center and network equipment, sorted by vendor. Search shapes, then download .vss and .vssx files.">
+  <meta name="theme-color" content="#f3f0e8" id="theme-color">
+  <link rel="canonical" href="https://electronreaper.github.io/visio-stencils/">
+  <meta property="og:title" content="Visio Stencils">
+  <meta property="og:description" content="Vendor Visio stencils for data-center and network diagrams. Search by shape, download the file, and open it from My Shapes.">
+  <meta property="og:url" content="https://electronreaper.github.io/visio-stencils/">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip" href="#catalog">Skip to catalog</a>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="./">
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <rect width="32" height="32" rx="7" fill="#0f5e57"/>
+          <rect x="7" y="6.5" width="18" height="19" rx="1.5" fill="none" stroke="#f4f1ea" stroke-width="1.7"/>
+          <rect x="10.5" y="10" width="11" height="4.2" rx="0.6" fill="#f4f1ea"/>
+          <rect x="10.5" y="16.2" width="7.5" height="2.4" rx="0.5" fill="#e7b15a"/>
+          <rect x="10.5" y="20.2" width="11" height="2.2" rx="0.5" fill="#f4f1ea" opacity="0.85"/>
+        </svg>
+        <span>Visio Stencils</span>
+      </a>
+      <nav class="nav" aria-label="Page">
+        <a href="#install">Install</a>
+        <a href="#catalog">Catalog</a>
+        <a href="https://github.com/electronreaper/visio-stencils">GitHub</a>
+        <button type="button" class="icon-btn" id="theme-toggle" aria-label="Use dark theme">
+          <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+            <path fill="currentColor" d="M14.5 3.1a8.8 8.8 0 1 0 6.4 14.2A8.2 8.2 0 0 1 14.5 3.1z"/>
+          </svg>
+          <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="4" fill="currentColor"/>
+            <path fill="currentColor" d="M11 2h2v3h-2zm0 17h2v3h-2zM2 11h3v2H2zm17 0h3v2h-3zM4.2 5.6l1.4-1.4 2.1 2.1-1.4 1.4zm12.1 12.1 1.4-1.4 2.1 2.1-1.4 1.4zM5.6 19.8l-1.4-1.4 2.1-2.1 1.4 1.4zm12.1-12.1 2.1-2.1 1.4 1.4-2.1 2.1z"/>
+          </svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <section class="hero">
+        <div class="hero-grid">
+          <div>
+            <p class="eyebrow">Public stencil library</p>
+            <h1>Vendor shapes for Microsoft Visio.</h1>
+            <p class="lede">Data-center and network equipment, filed by vendor. Search a model, download the stencil, and open it from My Shapes.</p>
+            <div class="hero-actions">
+              <a class="btn primary" href="#catalog">Search the catalog</a>
+              <a class="btn" href="#install">How to install</a>
+            </div>
+          </div>
+          <div id="specimen" class="specimen" hidden aria-hidden="true"></div>
+        </div>
+        <dl class="stats">
+          <div><dd id="stat-stencils">—</dd><dt>Stencils</dt></div>
+          <div><dd id="stat-vendors">—</dd><dt>Vendors</dt></div>
+          <div><dd id="stat-vssx">—</dd><dt>Modern .vssx</dt></div>
+          <div><dd id="stat-vss">—</dd><dt>Legacy .vss</dt></div>
+          <div><dd id="stat-shapes">—</dd><dt>Indexed shapes</dt></div>
+        </dl>
+      </section>
+
+      <section id="install" class="panel">
+        <div class="section-head">
+          <h2>Install</h2>
+          <p>Download a file, drop it in My Shapes, then pick it up inside Visio. A vendor folder becomes a submenu.</p>
+        </div>
+        <ol class="steps">
+          <li>
+            <h3>Download</h3>
+            <p>Save a stencil from the catalog, or take a whole vendor as a <code>.zip</code> from the vendor’s banner. The repository itself is also a <a href="https://github.com/electronreaper/visio-stencils/archive/refs/heads/main.zip">single archive</a>.</p>
+          </li>
+          <li>
+            <h3>Put it in My Shapes</h3>
+            <p>Place the file in <code>Documents\My Shapes</code>. Vendor subfolders work and show up as submenus.</p>
+          </li>
+          <li>
+            <h3>Open it in Visio</h3>
+            <p>In Visio, choose <strong>More Shapes &gt; My Shapes</strong> and select the stencil.</p>
+          </li>
+        </ol>
+        <aside class="callout">
+          <h3>Older .vss files and File Block</h3>
+          <p>Very old <code>.vss</code> formats may be blocked by Visio’s File Block setting (<strong>Trust Center &gt; File Block Settings</strong>). They can be opened by temporarily allowing them, then saved as <code>.vssx</code>.</p>
+          <p>In current Visio: <strong>File &gt; Options &gt; Trust Center &gt; Trust Center Settings &gt; File Block Settings</strong>. Allow the older binary stencil types, open the file, save it as <code>.vssx</code>, then turn the block back on if you want it.</p>
+        </aside>
+      </section>
+
+      <section id="catalog" class="panel">
+        <div class="section-head">
+          <h2>Catalog</h2>
+          <p>Filter by vendor or format. Search matches the vendor, the file name, and — for <code>.vssx</code> — every master shape in the package. Legacy <code>.vss</code> files are listed by name only.</p>
+        </div>
+        <noscript>
+          <p class="notice">This catalog uses JavaScript to search and filter. The same data is in <a href="stencils.json">stencils.json</a>, and the files live in the <a href="https://github.com/electronreaper/visio-stencils/tree/main/stencils">stencils folder on GitHub</a>.</p>
+        </noscript>
+        <div class="catalog-layout">
+          <aside class="sidebar">
+            <div class="search">
+              <label class="field-label" for="q">Search</label>
+              <div class="search-field">
+                <input id="q" type="search" placeholder="Vendor, file, or shape" autocomplete="off" enterkeyhint="search">
+                <kbd aria-hidden="true">/</kbd>
+              </div>
+            </div>
+            <div class="segmented" id="format" role="group" aria-label="File format">
+              <button type="button" data-format="all" aria-pressed="true">All</button>
+              <button type="button" data-format="vssx" aria-pressed="false">.vssx</button>
+              <button type="button" data-format="vss" aria-pressed="false">.vss</button>
+            </div>
+            <p class="field-label" id="vendor-label">Vendors</p>
+            <nav id="vendors" aria-labelledby="vendor-label"></nav>
+          </aside>
+          <div class="catalog-main">
+            <div id="banner" class="banner" hidden></div>
+            <div class="results-bar">
+              <p id="count" aria-live="polite">Loading catalog…</p>
+              <div class="results-tools">
+                <label class="sort-label" for="sort">Sort</label>
+                <select id="sort">
+                  <option value="vendor">Vendor</option>
+                  <option value="name">Name</option>
+                  <option value="size">Size</option>
+                  <option value="shapes">Shapes</option>
+                </select>
+                <button type="button" class="btn" id="clear" hidden>Clear</button>
+              </div>
+            </div>
+            <div id="results"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>The stencils are the property of their respective vendors, collected from public vendor and VisioCafe sources. Trademarks belong to their owners. This project is not affiliated with those vendors.</p>
+      <p class="footer-links">
+        <a href="https://github.com/electronreaper/visio-stencils">Repository</a>
+        <a href="stencils.json">Catalog data</a>
+        <a href="https://github.com/electronreaper/visio-stencils/archive/refs/heads/main.zip">Download repository</a>
+      </p>
+    </div>
+  </footer>
+  <script src="app.js"></script>
+</body>
+</html>
